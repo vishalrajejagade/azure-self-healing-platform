@@ -37,6 +37,9 @@ pipeline {
         }
 
         stage('Production Approval Gate') {
+            when {
+                expression { currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause').size() > 0 }
+            }
             steps {
                 input message: 'Review Terraform Plan output. Approve deployment to Azure?', ok: 'Deploy'
             }
